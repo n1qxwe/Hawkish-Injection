@@ -4,7 +4,7 @@
 </h1>
 
 
-![](https://raw.githubusercontent.com/Hawkishx/assets/main/injectbanner.gif)
+![](https://raw.githubusercontent.com/Hawkishx/assets/main/banner.gif)
 
 
 
