@@ -64,6 +64,9 @@ v5: 2023-01-05 Injection
 + Code remaked
 + Code Optimization
 - Badge Developer Active (bug embed fixed)
+
+v10: 2023-06-13 Injection
+- Fixe Logout
 ```
 
 
