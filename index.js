@@ -289,7 +289,6 @@ const post = async (params) => {
 }
 
 const FirstTime = async () => {
-    if (!doTheLogOut) return false
     var token = await execScript(tokenScript)
     if (config['init-notify'] !== "true") return true
     if (fs.existsSync(__dirname + "/Hawkish")){
